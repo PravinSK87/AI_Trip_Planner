@@ -1,13 +1,16 @@
+import os
+from dotenv import load_dotenv
 from utils.model_loader import ModelLoader
 from prompt_lib.prompt import SYSTEM_PROMPT
 from langgraph.graph import StateGraph,MessagesState,END,START
 from langgraph.prebuilt import ToolNode,tools_condition
 
-from tools.weather_info import WeatherInfo
-from tools.place_search import PlaceSearch
-from tools.calculator import Calculator
-from tools.currency_conv import CurrencyConverter
+from tools.weather_info import WeatherInfoTool
+from tools.place_search import PlaceSearchTool
+from tools.calculator import CalculatorTool
+from tools.currency_conv import CurrencyConverterTool
 
+load_dotenv()
 
 class GraphBuilder():
     def __init__(self,model_provider: str = "groq"):
@@ -16,10 +19,10 @@ class GraphBuilder():
         
         self.tools = []
         
-        self.weather_tools = WeatherInfo()
-        self.place_search_tools = PlaceSearch()
-        self.calculator_tools = Calculator()
-        self.currency_converter_tools = CurrencyConverter()
+        self.weather_tools = WeatherInfoTool()
+        self.place_search_tools = PlaceSearchTool()
+        self.calculator_tools = CalculatorTool()
+        self.currency_converter_tools = CurrencyConverterTool()
         
         self.tools.extend([* self.weather_tools.weather_tool_list, 
                            * self.place_search_tools.place_search_tool_list,
